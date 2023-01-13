@@ -7,8 +7,8 @@ namespace car_rent_refactoring_backend.Models
     {
         public string Name { get; set; }
 
-        public string Cpf { get; set; }
+        public string ZipCode { get; set; }
 
-        public string CellPhone { get; set; }
+        public string Cnpj { get; set; }
     }
 }

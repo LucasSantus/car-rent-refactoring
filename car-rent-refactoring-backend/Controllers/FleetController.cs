@@ -1,5 +1,4 @@
 ﻿using car_rent_refactoring_backend.Models;
-using car_rent_refactoring_backend.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,57 +10,53 @@ namespace car_rent_refactoring_backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StoreController : ControllerBase
+    public class FleetController : ControllerBase
     {
-        public static List<Store> DB { get; set; } = new List<Store>();
+        public static List<Fleet> DB { get; set; } = new List<Fleet>();
 
-        public StoreController() { }
+        public FleetController() { }
 
         [HttpGet]
-        public List<Store> GetAll()
+        public List<Fleet> GetAll()
         {
             return DB;
         }
 
         [HttpGet("GetById/{id}")]
-        public Store GetById(Guid id)
+        public Fleet GetById(Guid id)
         {
             return DB.FirstOrDefault(_ => _.Id == id);
         }
 
         [HttpPost]
-        public Store Create([FromBody] Store item)
+        public Fleet Create([FromBody] Fleet item)
         {
-            if(Validate(item)) DB.Add(item);
-
+            DB.Add(item);
             return item;
         }
 
 
         [HttpPut]
-        public Store Update([FromBody] Store item)
+        public Fleet Update([FromBody] Fleet item)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == item.Id);
-
+ 
             if (itemById != null)
             {
                 itemById.Name = item.Name;
-                itemById.ZipCode = item.ZipCode;
-                itemById.Cnpj = item.Cnpj;
+                itemById.StoreId = item.StoreId;
                 itemById.UpdateAt = DateTime.Now;
             }
 
             return itemById;
         }
         [HttpDelete]
-        public List<Store> Delete(Guid Id)
+        public List<Fleet> Delete(Guid Id)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == Id);
             DB.Remove(itemById);
             return DB;
         }
-
-        private bool Validate(Store item) => new StoreValidator(item).CheckCnpj().isValid;
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using car_rent_refactoring_backend.Models;
-using car_rent_refactoring_backend.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,57 +10,55 @@ namespace car_rent_refactoring_backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StoreController : ControllerBase
+    public class RentController : ControllerBase
     {
-        public static List<Store> DB { get; set; } = new List<Store>();
+        public static List<Rent> DB { get; set; } = new List<Rent>();
 
-        public StoreController() { }
+        public RentController() { }
 
         [HttpGet]
-        public List<Store> GetAll()
+        public List<Rent> GetAll()
         {
             return DB;
         }
 
         [HttpGet("GetById/{id}")]
-        public Store GetById(Guid id)
+        public Rent GetById(Guid id)
         {
             return DB.FirstOrDefault(_ => _.Id == id);
         }
 
         [HttpPost]
-        public Store Create([FromBody] Store item)
+        public Rent Create([FromBody] Rent item)
         {
-            if(Validate(item)) DB.Add(item);
-
+            DB.Add(item);
             return item;
         }
 
 
         [HttpPut]
-        public Store Update([FromBody] Store item)
+        public Rent Update([FromBody] Rent item)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == item.Id);
-
+ 
             if (itemById != null)
             {
-                itemById.Name = item.Name;
-                itemById.ZipCode = item.ZipCode;
-                itemById.Cnpj = item.Cnpj;
+                itemById.DtBegin = item.DtBegin;
+                itemById.DtEnd = item.DtEnd;
+                itemById.CustomerId = item.CustomerId;
+                itemById.VehicleId = item.VehicleId;
                 itemById.UpdateAt = DateTime.Now;
             }
 
             return itemById;
         }
         [HttpDelete]
-        public List<Store> Delete(Guid Id)
+        public List<Rent> Delete(Guid Id)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == Id);
             DB.Remove(itemById);
             return DB;
         }
-
-        private bool Validate(Store item) => new StoreValidator(item).CheckCnpj().isValid;
 
     }
 }

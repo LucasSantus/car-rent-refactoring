@@ -9,7 +9,7 @@ namespace car_rent_refactoring_backend.Models
             UpdateAt = DateTime.Now;
         }
 
-        public Guid Id { get; protected set; }
+        public Guid Id { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

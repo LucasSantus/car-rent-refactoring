@@ -3,12 +3,13 @@
 namespace car_rent_refactoring_backend.Models
 {
 
-    public class Store : Entity
+    public class Fleet : Entity
     {
         public string Name { get; set; }
 
-        public string Cpf { get; set; }
-
-        public string CellPhone { get; set; }
+        public Guid StoreId
+        {
+            get; set;
+        }
     }
 }

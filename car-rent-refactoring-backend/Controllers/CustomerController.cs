@@ -10,26 +10,26 @@ namespace car_rent_refactoring_backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VehicleController : ControllerBase
+    public class CustomerController : ControllerBase
     {
-        public static List<Vehicle> DB { get; set; } = new List<Vehicle>();
+        public static List<Customer> DB { get; set; } = new List<Customer>();
 
-        public VehicleController() { }
+        public CustomerController() { }
 
         [HttpGet]
-        public List<Vehicle> GetAll()
+        public List<Customer> GetAll()
         {
             return DB;
         }
 
         [HttpGet("GetById/{id}")]
-        public Vehicle GetById(Guid id)
+        public Customer GetById(Guid id)
         {
             return DB.FirstOrDefault(_ => _.Id == id);
         }
 
         [HttpPost]
-        public Vehicle Create([FromBody] Vehicle item)
+        public Customer Create([FromBody] Customer item)
         {
             DB.Add(item);
             return item;
@@ -37,21 +37,22 @@ namespace car_rent_refactoring_backend.Controllers
 
 
         [HttpPut]
-        public Vehicle Update([FromBody] Vehicle item)
+        public Customer Update([FromBody] Customer item)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == item.Id);
  
             if (itemById != null)
             {
-                itemById.Description = item.Description;
-                itemById.Type = item.Type;
+                itemById.FullName = item.FullName;
+                itemById.Cpf = item.Cpf;
+                itemById.CellPhone = item.Cpf;
                 itemById.UpdateAt = DateTime.Now;
             }
 
             return itemById;
         }
         [HttpDelete]
-        public List<Vehicle> Delete(Guid Id)
+        public List<Customer> Delete(Guid Id)
         {
             var itemById = DB.FirstOrDefault(_ => _.Id == Id);
             DB.Remove(itemById);

@@ -25,7 +25,11 @@
         <div class="card mt-4">
           <div class="card-body">
             <h3>Lojas</h3>
-            <form id="form-register-stores">
+            <form
+              id="form-register-stores"
+              class="g-3 needs-validation"
+              novalidate
+            >
               <div class="row">
                 <div class="col-12 col-md-6 col-lg-4">
                   <div class="mb-3">
@@ -33,9 +37,13 @@
                     <input
                       type="text"
                       class="form-control"
+                      name="name"
                       id="name"
                       placeholder="Insira o nome..."
+                      required
                     />
+                    <div class="valid-feedback">Nome válido!</div>
+                    <div class="invalid-feedback">Preencha o nome!</div>
                   </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -44,9 +52,13 @@
                     <input
                       type="text"
                       class="form-control"
+                      name="zipCode"
                       id="zipCode"
                       placeholder="Insira o cep..."
+                      required
                     />
+                    <div class="valid-feedback">Cep válido!</div>
+                    <div class="invalid-feedback">Preencha o cep!</div>
                   </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -55,21 +67,24 @@
                     <input
                       type="text"
                       class="form-control"
+                      name="cnpj"
                       id="cnpj"
                       placeholder="Insira o cnpj:"
+                      required
                     />
+                    <div class="valid-feedback">Cnpj válido!</div>
+                    <div class="invalid-feedback">Preencha o cnpj!</div>
                   </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="mb-3">
-                    <button type="submit" class="btn btn-primary d-grid w-100">
+                <div class="col-12 col-md-12 col-lg-3">
+                  <div class="mb-3 d-flex gap-2">
+                    <button
+                      id="id-button-save"
+                      class="btn btn-primary d-grid w-100"
+                    >
                       Salvar
                     </button>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="mb-3">
                     <button type="reset" class="btn btn-secondary d-grid w-100">
                       Limpar
                     </button>
@@ -105,12 +120,18 @@
 
     <script>
       $(document).ready(function () {
+        $("#zipCode").mask("00000-000");
+        $("#cnpj").mask("00.000.000/0000-00");
+
+        validationForm();
         request = new Request("http://localhost:5000/");
         request.get("Store", getAllStores);
 
         const table = $("#id-table-stores");
 
         function getAllStores(data) {
+          $("#id-table-stores-tbody").empty();
+
           if (data.length > 0) {
             data.map((item) => {
               $(`
@@ -128,14 +149,12 @@
           }
         }
 
-        $("form-register-stores").submit(function (event) {
+        $("#form-register-stores").submit(function (event) {
           const form = $(this).closest("form");
-
-          console.log(form);
-
+          validationForm();
+          const serialized = convertSerializeToJSON(form);
           event.preventDefault();
-
-          request.post("Store", getAllStores, form);
+          request.post("Store", getAllStores, serialized);
         });
       });
     </script>

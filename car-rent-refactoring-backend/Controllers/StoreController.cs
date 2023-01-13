@@ -30,11 +30,11 @@ namespace car_rent_refactoring_backend.Controllers
         }
 
         [HttpPost]
-        public Store Create([FromBody] Store item)
+        public List<Store> Create([FromBody] Store item)
         {
             if(Validate(item)) DB.Add(item);
 
-            return item;
+            return DB;
         }
 
 

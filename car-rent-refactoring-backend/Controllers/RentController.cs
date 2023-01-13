@@ -29,10 +29,10 @@ namespace car_rent_refactoring_backend.Controllers
         }
 
         [HttpPost]
-        public Rent Create([FromBody] Rent item)
+        public List<Rent> Create([FromBody] Rent item)
         {
             DB.Add(item);
-            return item;
+            return DB;
         }
 
 
